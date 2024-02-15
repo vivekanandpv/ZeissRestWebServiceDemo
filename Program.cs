@@ -1,3 +1,5 @@
+using Microsoft.EntityFrameworkCore;
+using ZeissRestWebServiceDemo.Context;
 using ZeissRestWebServiceDemo.Services;
 
 namespace ZeissRestWebServiceDemo
@@ -8,15 +10,16 @@ namespace ZeissRestWebServiceDemo
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            // Add services to the container.
-
             builder.Services.AddControllers();
+
+            builder.Services.AddDbContext<BookContext>(options =>
+            {
+                options.UseSqlite("Data Source=books.db");
+            });
+
             builder.Services.AddScoped<IBookService, BookService>();
 
             var app = builder.Build();
-
-            // Configure the HTTP request pipeline.
-
 
             app.MapControllers();
 
